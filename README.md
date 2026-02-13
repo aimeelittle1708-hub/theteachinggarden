@@ -16,7 +16,7 @@ ________________________________________
 <li>Credits</li></ol>
 <br>
 _____________________________________
-<h2>🌱 1. Project Overview <h2>
+<h2>🌱 1. Project Overview </h2>
 <p>Teaching Garden is a resource-sharing platform designed for primary educators.</p>
 <p>The application allows users to:</p>
 <ul>
