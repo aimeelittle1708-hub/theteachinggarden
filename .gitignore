@@ -1,5 +1,6 @@
+venv/
 .venv/
-eny.py
-__pycache__
-*.py[cod]
-db.Splite3
+*.pyc
+__pycache__/
+*.egg-info/
+.DS_Store
