@@ -115,7 +115,7 @@ ________________________________________
 <h2>🗃️ 5. Database Design</h2>
 
 <h3>Entity Relationship Diagram</h3>
-<p><em>ERD image to be embedded here</em></p>
+<p><em>![Teaching GardenERD](image.png)</em></p>
 
 <h3>Database Structure</h3>
 <p>The database follows a <strong>normalized relational structure</strong> for optimal data integrity:</p>
