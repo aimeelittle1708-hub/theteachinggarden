@@ -113,8 +113,7 @@ AUTH_USER_MODEL = "blog.User"
 # Allauth auth backends (important)
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-]
+    ]
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'

@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
-from .forms import RegisterForm, LoginForm
+from django.contrib.auth.decorators import login_required
+
+from .forms import RegisterForm, LoginForm, ResourceForm
+from .models import Resource
 
 
 def home(request):
@@ -8,7 +11,8 @@ def home(request):
 
 
 def resources(request):
-    return render(request, "resources.html")
+    resources = Resource.objects.all()
+    return render(request, "resources.html", {"resources": resources})
 
 
 def posts(request):
@@ -47,3 +51,16 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("home")
+
+
+@login_required
+def upload_resource(request):
+    form = ResourceForm(request.POST or None, request.FILES or None)
+
+    if request.method == "POST" and form.is_valid():
+        resource = form.save(commit=False)
+        resource.uploaded_by = request.user
+        resource.save()
+        return redirect("resources")
+
+    return render(request, "upload.html", {"form": form})
