@@ -1,8 +1,16 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager, PermissionsMixin
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
 )
+from cloudinary.models import CloudinaryField
 
+
+# ----------------------
+# Custom User Manager
+# ----------------------
 class UserManager(BaseUserManager):
     def create_user(self, email, name, password=None):
         if not email:
@@ -22,6 +30,9 @@ class UserManager(BaseUserManager):
         return user
 
 
+# ----------------------
+# Custom User Model
+# ----------------------
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=100)
@@ -36,3 +47,60 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+# ----------------------
+# Resource Model
+# ----------------------
+class Resource(models.Model):
+    SUBJECT_CHOICES = [
+        ("Maths", "Maths"),
+        ("Science", "Science"),
+        ("English", "English"),
+        ("History", "History"),
+        ("Geography", "Geography"),
+        ("Art", "Art"),
+        ("Music", "Music"),
+        ("PE", "PE"),
+        ("Computing", "Computing"),
+        ("Design & Technology", "Design & Technology"),
+        ("MFL", "MFL"),
+        ("Citizenship", "Citizenship"),
+        ("Cookery", "Cookery"),
+        ("Other", "Other"),
+    ]
+
+    YEAR_CHOICES = [
+        ("Year 1", "Year 1"),
+        ("Year 2", "Year 2"),
+        ("Year 3", "Year 3"),
+        ("Year 4", "Year 4"),
+        ("Year 5", "Year 5"),
+        ("Year 6", "Year 6"),
+        ("KS3", "KS3"),
+        ("KS4", "KS4"),
+        ("KS5", "KS5"),
+        ("Other", "Other"),
+    ]
+
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    subject = models.CharField(max_length=50, choices=SUBJECT_CHOICES)
+    year_group = models.CharField(max_length=50, choices=YEAR_CHOICES)
+
+    # Cloudinary supports PDFs, Word docs, PPTs, images etc.
+    file = CloudinaryField("resource_file", resource_type="raw")
+
+    uploaded_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="resources"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.title
