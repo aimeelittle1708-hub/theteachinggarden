@@ -18,11 +18,19 @@
 
   <div class="collapse navbar-collapse" id="nav">
     <ul class="navbar-nav ms-auto">
-      <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-      <li class="nav-item"><a class="nav-link" href="/resources/">Resources</a></li>
-      <li class="nav-item"><a class="nav-link" href="/posts/">Posts</a></li>
-      <li class="nav-item"><a class="nav-link" href="/about/">About</a></li>
-    </ul>
+  <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+  <li class="nav-item"><a class="nav-link" href="/resources/">Resources</a></li>
+  <li class="nav-item"><a class="nav-link" href="/posts/">Posts</a></li>
+  <li class="nav-item"><a class="nav-link" href="/about/">About</a></li>
+
+  {% if user.is_authenticated %}
+    <li class="nav-item"><span class="nav-link">Hi, {{ user.name }}</span></li>
+    <li class="nav-item"><a class="btn btn-outline-success ms-2" href="/logout/">Logout</a></li>
+  {% else %}
+    <li class="nav-item"><a class="nav-link" href="/login/">Login</a></li>
+    <li class="nav-item"><a class="btn btn-success ms-2" href="/register/">Sign Up</a></li>
+  {% endif %}
+</ul>
   </div>
 </nav>
 
