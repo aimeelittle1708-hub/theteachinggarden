@@ -11,6 +11,11 @@ urlpatterns = [
     path("register/", views.register_view, name="register"),
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
-]
 
-path("upload/", views.upload_resource, name="upload_resource"),
+    # resource management
+    path("upload/", views.upload_resource, name="upload_resource"),
+
+    # resource editing/deletion
+    path("resources/<int:pk>/edit/", views.edit_resource, name="edit_resource"),
+    path("resources/<int:pk>/delete/", views.delete_resource, name="delete_resource"),
+]

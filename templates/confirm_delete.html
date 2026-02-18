@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="fw-bold mb-3">Delete Resource</h1>
+
+<div class="alert alert-warning" style="max-width: 720px;">
+  Are you sure you want to delete: <strong>{{ resource.title }}</strong>?
+</div>
+
+<form method="post">
+  {% csrf_token %}
+  <button class="btn btn-danger">Yes, delete</button>
+  <a class="btn btn-secondary ms-2" href="/resources/">Cancel</a>
+</form>
+{% endblock %}

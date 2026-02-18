@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from django.db.models import Q
 
 from .forms import RegisterForm, LoginForm, ResourceForm
 from .models import Resource
 
-from django.db.models import Q
 
 def home(request):
     return render(request, "home.html")
@@ -38,9 +39,6 @@ def resources(request):
     }
 
     return render(request, "resources.html", context)
-
-    resources = Resource.objects.all()
-    return render(request, "resources.html", {"resources": resources})
 
 
 def posts(request):
@@ -92,3 +90,39 @@ def upload_resource(request):
         return redirect("resources")
 
     return render(request, "upload.html", {"form": form})
+
+
+@login_required
+def edit_resource(request, pk):
+    resource = get_object_or_404(Resource, pk=pk)
+
+    if resource.uploaded_by != request.user:
+        return HttpResponseForbidden("You are not allowed to edit this resource.")
+
+    form = ResourceForm(request.POST or None, request.FILES or None, instance=resource)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        return redirect("resources")
+
+    return render(request, "edit_resource.html", {"form": form, "resource": resource})
+
+
+@login_required
+def delete_resource(request, pk):
+    resource = get_object_or_404(Resource, pk=pk)
+
+    if resource.uploaded_by != request.user:
+        return HttpResponseForbidden("You are not allowed to delete this resource.")
+
+    if request.method == "POST":
+        # Try to delete the Cloudinary asset too
+        try:
+            resource.file.delete()
+        except Exception:
+            pass
+
+        resource.delete()
+        return redirect("resources")
+
+    return render(request, "confirm_delete.html", {"resource": resource})
