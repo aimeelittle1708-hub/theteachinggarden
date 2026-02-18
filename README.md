@@ -67,6 +67,8 @@ ________________________________________
   <li>Manage content via Django admin panel</li>
   <li>Ensure secure authentication and authorization</li>
 </ul>
+<img width="1714" height="599" alt="image" src="https://github.com/user-attachments/assets/66ab7bed-9481-47db-b577-8f02324a98ec" />
+
 
 <hr>
 
