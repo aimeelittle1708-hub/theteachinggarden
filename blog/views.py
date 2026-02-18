@@ -5,12 +5,40 @@ from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm, LoginForm, ResourceForm
 from .models import Resource
 
+from django.db.models import Q
 
 def home(request):
     return render(request, "home.html")
 
 
 def resources(request):
+    resources = Resource.objects.all()
+
+    subject = request.GET.get("subject")
+    year = request.GET.get("year")
+    query = request.GET.get("q")
+
+    if subject:
+        resources = resources.filter(subject=subject)
+
+    if year:
+        resources = resources.filter(year_group=year)
+
+    if query:
+        resources = resources.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query)
+        )
+
+    context = {
+        "resources": resources,
+        "selected_subject": subject,
+        "selected_year": year,
+        "query": query,
+    }
+
+    return render(request, "resources.html", context)
+
     resources = Resource.objects.all()
     return render(request, "resources.html", {"resources": resources})
 
