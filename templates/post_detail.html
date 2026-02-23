@@ -11,6 +11,22 @@
   </div>
 </div>
 
+{% if user.is_authenticated and my_pending_comments %}
+  <h5 class="fw-bold mt-4">Your pending comments</h5>
+  {% for c in my_pending_comments %}
+    <div class="border rounded p-2 mb-2">
+      <span class="badge bg-warning text-dark">Pending approval</span>
+      <div class="mt-2">{{ c.content|linebreaksbr }}</div>
+
+      <div class="mt-2">
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'edit_comment' c.id %}">Edit</a>
+        <a class="btn btn-outline-danger btn-sm ms-2" href="{% url 'delete_comment' c.id %}">Delete</a>
+      </div>
+    </div>
+  {% endfor %}
+  <hr class="my-4">
+{% endif %}
+
 <h4 class="fw-bold mb-3">Comments</h4>
 
 {% for c in comments %}
@@ -18,7 +34,17 @@
     <div class="small text-muted mb-1">
       {{ c.author.name }} • {{ c.created_at|date:"d M Y, H:i" }}
     </div>
+
     <div>{{ c.content|linebreaksbr }}</div>
+
+    {% if user.is_authenticated %}
+      {% if c.author == user or user.is_staff %}
+        <div class="mt-2">
+          <a class="btn btn-outline-secondary btn-sm" href="{% url 'edit_comment' c.id %}">Edit</a>
+          <a class="btn btn-outline-danger btn-sm ms-2" href="{% url 'delete_comment' c.id %}">Delete</a>
+        </div>
+      {% endif %}
+    {% endif %}
   </div>
 {% empty %}
   <p class="text-muted">No approved comments yet.</p>
@@ -34,33 +60,10 @@
     {{ form.as_p }}
     <button class="btn btn-success">Post Comment</button>
   </form>
-{% if user.is_authenticated %}
-  {% if my_pending_comments %}
-    <h5 class="fw-bold mt-4">Your pending comments</h5>
-    {% for c in my_pending_comments %}
-      <div class="border rounded p-2 mb-2">
-        <span class="badge bg-warning text-dark">Pending approval</span>
-        <div class="mt-2">{{ c.content|linebreaksbr }}</div>
 
-        <div class="mt-2">
-          <a class="btn btn-outline-secondary btn-sm" href="{% url 'edit_comment' c.id %}">Edit</a>
-          <a class="btn btn-outline-danger btn-sm ms-2" href="{% url 'delete_comment' c.id %}">Delete</a>
-        </div>
-      </div>
-    {% endfor %}
-  {% endif %}
-{% endif %}
   <p class="text-muted small mt-2">
     Comments need admin approval before they appear publicly.
   </p>
-  {% if user.is_authenticated %}
-  {% if c.author == user or user.is_staff %}
-    <div class="mt-2">
-      <a class="btn btn-outline-secondary btn-sm" href="{% url 'edit_comment' c.id %}">Edit</a>
-      <a class="btn btn-outline-danger btn-sm ms-2" href="{% url 'delete_comment' c.id %}">Delete</a>
-    </div>
-  {% endif %}
-{% endif %}
 {% else %}
   <p><a href="{% url 'login' %}">Login</a> to comment.</p>
 {% endif %}
