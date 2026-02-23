@@ -1,97 +1,140 @@
-from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.utils import timezone
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from django.db.models import Q
 
-from .models import User, Resource, Post, Comment
-
-
-# ----------------------
-# Custom User Admin
-# ----------------------
-@admin.register(User)
-class UserAdmin(BaseUserAdmin):
-    ordering = ("email",)
-    list_display = ("email", "name", "is_staff", "is_active", "is_superuser")
-    search_fields = ("email", "name")
-    list_filter = ("is_staff", "is_active", "is_superuser")
-
-    fieldsets = (
-        (None, {"fields": ("email", "password")}),
-        ("Personal info", {"fields": ("name",)}),
-        ("Permissions", {"fields": ("is_staff", "is_active", "is_superuser", "groups", "user_permissions")}),
-        ("Important dates", {"fields": ("last_login",)}),
-    )
-
-    add_fieldsets = (
-        (None, {
-            "classes": ("wide",),
-            "fields": ("email", "name", "password1", "password2", "is_staff", "is_active"),
-        }),
-    )
-
-    filter_horizontal = ("groups", "user_permissions")
+from .forms import RegisterForm, LoginForm, ResourceForm
+from .models import Resource
 
 
-# ----------------------
-# Resource Admin
-# ----------------------
-@admin.register(Resource)
-class ResourceAdmin(admin.ModelAdmin):
-    list_display = ("title", "subject", "year_group", "uploaded_by", "is_approved", "created_at")
-    list_filter = ("subject", "year_group", "is_approved", "created_at")
-    search_fields = ("title", "description", "uploaded_by__email")
-    actions = ["approve_resources", "hide_resources"]
+def home(request):
+    return render(request, "home.html")
 
-    def approve_resources(self, request, queryset):
-        # If you added approved_by/approved_at fields, we set them.
-        # If you didn't add them, remove those two assignments.
-        queryset.update(
-            is_approved=True,
-            approved_by=request.user,
-            approved_at=timezone.now(),
+
+def resources(request):
+    resources_qs = Resource.objects.all()
+
+    # Hide unapproved resources from normal users.
+    # Staff/superusers can see everything (including pending).
+    if not request.user.is_authenticated or not request.user.is_staff:
+        resources_qs = resources_qs.filter(is_approved=True)
+
+    subject = request.GET.get("subject")
+    year = request.GET.get("year")
+    query = request.GET.get("q")
+
+    if subject:
+        resources_qs = resources_qs.filter(subject=subject)
+
+    if year:
+        resources_qs = resources_qs.filter(year_group=year)
+
+    if query:
+        resources_qs = resources_qs.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query)
         )
-    approve_resources.short_description = "Approve selected resources"
 
-    def hide_resources(self, request, queryset):
-        queryset.update(is_approved=False)
-    hide_resources.short_description = "Hide selected resources"
-
-
-# ----------------------
-# Comment Inline on Posts
-# ----------------------
-class CommentInline(admin.TabularInline):
-    model = Comment
-    extra = 0
-    fields = ("author", "content", "is_approved", "created_at")
-    readonly_fields = ("created_at",)
+    context = {
+        "resources": resources_qs,
+        "selected_subject": subject,
+        "selected_year": year,
+        "query": query,
+    }
+    return render(request, "resources.html", context)
 
 
-# ----------------------
-# Post Admin
-# ----------------------
-@admin.register(Post)
-class PostAdmin(admin.ModelAdmin):
-    list_display = ("title", "author", "created_at")
-    list_filter = ("created_at",)
-    search_fields = ("title", "content", "author__email")
-    inlines = [CommentInline]
+def posts(request):
+    return render(request, "posts.html")
 
 
-# ----------------------
-# Comment Admin (Moderation)
-# ----------------------
-@admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ("post", "author", "is_approved", "created_at")
-    list_filter = ("is_approved", "created_at")
-    search_fields = ("content", "author__email", "post__title")
-    actions = ["approve_comments", "hide_comments"]
+def about(request):
+    return render(request, "about.html")
 
-    def approve_comments(self, request, queryset):
-        queryset.update(is_approved=True)
-    approve_comments.short_description = "Approve selected comments"
 
-    def hide_comments(self, request, queryset):
-        queryset.update(is_approved=False)
-    hide_comments.short_description = "Hide selected comments"
+def register_view(request):
+    if request.user.is_authenticated:
+        return redirect("home")
+
+    form = RegisterForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        user = form.save()
+        login(request, user)
+        return redirect("home")
+
+    return render(request, "auth/register.html", {"form": form})
+
+
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect("home")
+
+    form = LoginForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        login(request, form.cleaned_data["user"])
+        return redirect("home")
+
+    return render(request, "auth/login.html", {"form": form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("home")
+
+
+@login_required
+def upload_resource(request):
+    form = ResourceForm(request.POST or None, request.FILES or None)
+
+    if request.method == "POST" and form.is_valid():
+        resource = form.save(commit=False)
+        resource.uploaded_by = request.user
+
+        # New uploads are pending until admin approves
+        resource.is_approved = False
+        resource.approved_by = None
+        resource.approved_at = None
+
+        resource.save()
+        return redirect("resources")
+
+    return render(request, "upload.html", {"form": form})
+
+
+@login_required
+def edit_resource(request, pk):
+    resource = get_object_or_404(Resource, pk=pk)
+
+    # Owner OR superuser can edit (site UI)
+    if resource.uploaded_by != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("You are not allowed to edit this resource.")
+
+    form = ResourceForm(request.POST or None, request.FILES or None, instance=resource)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        return redirect("resources")
+
+    return render(request, "edit_resource.html", {"form": form, "resource": resource})
+
+
+@login_required
+def delete_resource(request, pk):
+    resource = get_object_or_404(Resource, pk=pk)
+
+    # Owner OR superuser can delete (site UI)
+    if resource.uploaded_by != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("You are not allowed to delete this resource.")
+
+    if request.method == "POST":
+        # Try to delete the Cloudinary asset too
+        try:
+            resource.file.delete()
+        except Exception:
+            pass
+
+        resource.delete()
+        return redirect("resources")
+
+    return render(request, "confirm_delete.html", {"resource": resource})

@@ -88,7 +88,6 @@ class Resource(models.Model):
     subject = models.CharField(max_length=50, choices=SUBJECT_CHOICES)
     year_group = models.CharField(max_length=50, choices=YEAR_CHOICES)
 
-    # Cloudinary supports PDFs, Word docs, PPTs, images etc.
     file = CloudinaryField("resource_file", resource_type="raw")
 
     uploaded_by = models.ForeignKey(
@@ -96,6 +95,17 @@ class Resource(models.Model):
         on_delete=models.CASCADE,
         related_name="resources"
     )
+
+    # 🔒 Approval fields (NEW)
+    is_approved = models.BooleanField(default=False)
+    approved_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="approved_resources"
+    )
+    approved_at = models.DateTimeField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -146,8 +156,8 @@ class Comment(models.Model):
 
     content = models.TextField()
 
-    # moderation: admin can approve/hide comments
-    is_approved = models.BooleanField(default=True)
+    # moderation
+    is_approved = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
 
