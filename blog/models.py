@@ -96,7 +96,7 @@ class Resource(models.Model):
         related_name="resources"
     )
 
-    # 🔒 Approval fields (NEW)
+    # Approval fields 
     is_approved = models.BooleanField(default=False)
     approved_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -129,6 +129,15 @@ class Post(models.Model):
         related_name="posts"
     )
 
+    is_approved = models.BooleanField(default=True)  # or False if you want moderation
+    approved_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="approved_posts"
+    )
+    approved_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -158,6 +167,14 @@ class Comment(models.Model):
 
     # moderation
     is_approved = models.BooleanField(default=False)
+    approved_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="approved_comments"
+    )
+    approved_at = models.DateTimeField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

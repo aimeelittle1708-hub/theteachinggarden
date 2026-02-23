@@ -43,13 +43,7 @@ class ResourceAdmin(admin.ModelAdmin):
     actions = ["approve_resources", "hide_resources"]
 
     def approve_resources(self, request, queryset):
-        # If you added approved_by/approved_at fields, we set them.
-        # If you didn't add them, remove those two assignments.
-        queryset.update(
-            is_approved=True,
-            approved_by=request.user,
-            approved_at=timezone.now(),
-        )
+        queryset.update(is_approved=True, approved_by=request.user, approved_at=timezone.now())
     approve_resources.short_description = "Approve selected resources"
 
     def hide_resources(self, request, queryset):
@@ -72,10 +66,18 @@ class CommentInline(admin.TabularInline):
 # ----------------------
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ("title", "author", "created_at")
-    list_filter = ("created_at",)
+    list_display = ("title", "author", "is_approved", "created_at")
+    list_filter = ("is_approved", "created_at")
     search_fields = ("title", "content", "author__email")
-    inlines = [CommentInline]
+    actions = ["approve_posts", "hide_posts"]
+
+    def approve_posts(self, request, queryset):
+        queryset.update(is_approved=True, approved_by=request.user, approved_at=timezone.now())
+    approve_posts.short_description = "Approve selected posts"
+
+    def hide_posts(self, request, queryset):
+        queryset.update(is_approved=False)
+    hide_posts.short_description = "Hide selected posts"
 
 
 # ----------------------
@@ -89,7 +91,7 @@ class CommentAdmin(admin.ModelAdmin):
     actions = ["approve_comments", "hide_comments"]
 
     def approve_comments(self, request, queryset):
-        queryset.update(is_approved=True)
+        queryset.update(is_approved=True, approved_by=request.user, approved_at=timezone.now())
     approve_comments.short_description = "Approve selected comments"
 
     def hide_comments(self, request, queryset):

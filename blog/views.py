@@ -7,6 +7,7 @@ from django.db.models import Q
 from .forms import RegisterForm, LoginForm, ResourceForm, PostForm
 from .models import Resource, Post
 
+
 def home(request):
     return render(request, "home.html")
 
@@ -14,9 +15,9 @@ def home(request):
 def resources(request):
     resources_qs = Resource.objects.all()
 
-    # Hide unapproved resources from normal users.
-    # Staff/superusers can see everything (including pending).
-    if not request.user.is_authenticated or not request.user.is_staff:
+    # Normal users only see approved resources.
+    # Staff/superusers can see everything.
+    if not request.user.is_staff:
         resources_qs = resources_qs.filter(is_approved=True)
 
     subject = request.GET.get("subject")
@@ -45,8 +46,15 @@ def resources(request):
 
 
 def posts(request):
-    posts = Post.objects.all()  # Ordered by newest first
-    return render(request, "posts.html", {"posts": posts})
+    posts_qs = Post.objects.all()
+
+    # Normal users only see approved posts.
+    # Staff/superusers can see everything.
+    if not request.user.is_staff:
+        posts_qs = posts_qs.filter(is_approved=True)
+
+    return render(request, "posts.html", {"posts": posts_qs})
+
 
 def about(request):
     return render(request, "about.html")
@@ -105,8 +113,8 @@ def upload_resource(request):
 def edit_resource(request, pk):
     resource = get_object_or_404(Resource, pk=pk)
 
-    # Owner OR superuser can edit (site UI)
-    if resource.uploaded_by != request.user and not request.user.is_superuser:
+    # Owner OR staff can edit
+    if resource.uploaded_by != request.user and not request.user.is_staff:
         return HttpResponseForbidden("You are not allowed to edit this resource.")
 
     form = ResourceForm(request.POST or None, request.FILES or None, instance=resource)
@@ -122,8 +130,8 @@ def edit_resource(request, pk):
 def delete_resource(request, pk):
     resource = get_object_or_404(Resource, pk=pk)
 
-    # Owner OR superuser can delete (site UI)
-    if resource.uploaded_by != request.user and not request.user.is_superuser:
+    # Owner OR staff can delete
+    if resource.uploaded_by != request.user and not request.user.is_staff:
         return HttpResponseForbidden("You are not allowed to delete this resource.")
 
     if request.method == "POST":
@@ -138,6 +146,7 @@ def delete_resource(request, pk):
 
     return render(request, "confirm_delete.html", {"resource": resource})
 
+
 @login_required
 def create_post(request):
     form = PostForm(request.POST or None)
@@ -145,6 +154,12 @@ def create_post(request):
     if request.method == "POST" and form.is_valid():
         post = form.save(commit=False)
         post.author = request.user
+
+        # If you want posts to be approved by admin first:
+        post.is_approved = False
+        post.approved_by = None
+        post.approved_at = None
+
         post.save()
         return redirect("posts")
 
@@ -155,7 +170,8 @@ def create_post(request):
 def edit_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
 
-    if post.author != request.user and not request.user.is_superuser:
+    # Owner OR staff can edit
+    if post.author != request.user and not request.user.is_staff:
         return HttpResponseForbidden("You cannot edit this post.")
 
     form = PostForm(request.POST or None, instance=post)
@@ -164,14 +180,15 @@ def edit_post(request, pk):
         form.save()
         return redirect("posts")
 
-    return render(request, "edit_post.html", {"form": form})
+    return render(request, "edit_post.html", {"form": form, "post": post})
 
 
 @login_required
 def delete_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
 
-    if post.author != request.user and not request.user.is_superuser:
+    # Owner OR staff can delete
+    if post.author != request.user and not request.user.is_staff:
         return HttpResponseForbidden("You cannot delete this post.")
 
     if request.method == "POST":
