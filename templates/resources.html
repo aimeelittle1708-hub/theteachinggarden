@@ -51,9 +51,11 @@
           Open / Download
         </a>
 
-        {% if user.is_authenticated and (r.uploaded_by == user or user.is_superuser) %}
-          <a class="btn btn-outline-secondary btn-sm ms-2" href="{% url 'edit_resource' r.id %}">Edit</a>
-          <a class="btn btn-outline-danger btn-sm ms-2" href="{% url 'delete_resource' r.id %}">Delete</a>
+        {% if user.is_authenticated %}
+          {% if r.uploaded_by == user or user.is_superuser %}
+            <a class="btn btn-outline-secondary btn-sm ms-2" href="{% url 'edit_resource' r.id %}">Edit</a>
+            <a class="btn btn-outline-danger btn-sm ms-2" href="{% url 'delete_resource' r.id %}">Delete</a>
+          {% endif %}
         {% endif %}
 
         {% if user.is_staff and not r.is_approved %}
