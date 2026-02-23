@@ -4,9 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.db.models import Q
 
-from .forms import RegisterForm, LoginForm, ResourceForm
-from .models import Resource
-
+from .forms import RegisterForm, LoginForm, ResourceForm, PostForm
+from .models import Resource, Post
 
 def home(request):
     return render(request, "home.html")
@@ -46,8 +45,8 @@ def resources(request):
 
 
 def posts(request):
-    return render(request, "posts.html")
-
+    posts = Post.objects.all()  # Ordered by newest first
+    return render(request, "posts.html", {"posts": posts})
 
 def about(request):
     return render(request, "about.html")
@@ -138,3 +137,45 @@ def delete_resource(request, pk):
         return redirect("resources")
 
     return render(request, "confirm_delete.html", {"resource": resource})
+
+@login_required
+def create_post(request):
+    form = PostForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        post = form.save(commit=False)
+        post.author = request.user
+        post.save()
+        return redirect("posts")
+
+    return render(request, "create_post.html", {"form": form})
+
+
+@login_required
+def edit_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    if post.author != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("You cannot edit this post.")
+
+    form = PostForm(request.POST or None, instance=post)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        return redirect("posts")
+
+    return render(request, "edit_post.html", {"form": form})
+
+
+@login_required
+def delete_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    if post.author != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("You cannot delete this post.")
+
+    if request.method == "POST":
+        post.delete()
+        return redirect("posts")
+
+    return render(request, "confirm_delete_post.html", {"post": post})

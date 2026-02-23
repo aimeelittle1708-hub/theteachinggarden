@@ -18,4 +18,9 @@ urlpatterns = [
     # resource editing/deletion
     path("resources/<int:pk>/edit/", views.edit_resource, name="edit_resource"),
     path("resources/<int:pk>/delete/", views.delete_resource, name="delete_resource"),
+
+    # post management
+    path("posts/create/", views.create_post, name="create_post"),
+    path("posts/<int:pk>/edit/", views.edit_post, name="edit_post"),
+    path("posts/<int:pk>/delete/", views.delete_post, name="delete_post")
 ]

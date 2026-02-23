@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
-from .models import User, Resource
-
+from .models import User, Resource, Post
 
 # ----------------------
 # Register Form
@@ -71,3 +70,16 @@ class ResourceForm(forms.ModelForm):
     class Meta:
         model = Resource
         fields = ["title", "description", "subject", "year_group", "file"]
+
+# -----------------------
+# Post Creation Form
+# -----------------------
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ["title", "content"]
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-control"}),
+            "content": forms.Textarea(attrs={"class": "form-control", "rows": 5}),
+        }
