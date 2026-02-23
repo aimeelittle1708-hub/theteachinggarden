@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-3">Edit Comment</h2>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn btn-success">Save</button>
+  <a class="btn btn-outline-secondary ms-2" href="javascript:history.back()">Cancel</a>
+</form>
+
+{% endblock %}

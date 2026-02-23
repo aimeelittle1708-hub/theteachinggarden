@@ -150,11 +150,24 @@ class Post(models.Model):
 # ----------------------
 # Comment Model
 # ----------------------
+# ----------------------
+# Comment Model
+# ----------------------
 class Comment(models.Model):
     post = models.ForeignKey(
         Post,
         on_delete=models.CASCADE,
-        related_name="comments"
+        related_name="comments",
+        null=True,
+        blank=True
+    )
+
+    resource = models.ForeignKey(
+        Resource,
+        on_delete=models.CASCADE,
+        related_name="comments",
+        null=True,
+        blank=True
     )
 
     author = models.ForeignKey(
@@ -182,4 +195,4 @@ class Comment(models.Model):
         ordering = ["created_at"]
 
     def __str__(self):
-        return f"Comment by {self.author} on {self.post}"
+        return f"Comment by {self.author}"

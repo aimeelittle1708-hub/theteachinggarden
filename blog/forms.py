@@ -1,19 +1,12 @@
 from django import forms
 from django.contrib.auth import authenticate
-from .models import User, Resource, Post
 
-# ----------------------
-# Register Form
-# ----------------------
+from .models import User, Resource, Post, Comment
+
+
 class RegisterForm(forms.ModelForm):
-    password1 = forms.CharField(
-        widget=forms.PasswordInput,
-        label="Password"
-    )
-    password2 = forms.CharField(
-        widget=forms.PasswordInput,
-        label="Confirm Password"
-    )
+    password1 = forms.CharField(widget=forms.PasswordInput, label="Password")
+    password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
 
     class Meta:
         model = User
@@ -23,57 +16,44 @@ class RegisterForm(forms.ModelForm):
         cleaned = super().clean()
         p1 = cleaned.get("password1")
         p2 = cleaned.get("password2")
-
         if p1 and p2 and p1 != p2:
             self.add_error("password2", "Passwords do not match.")
-
         return cleaned
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-
         if commit:
             user.save()
-
         return user
 
 
-# ----------------------
-# Login Form
-# ----------------------
 class LoginForm(forms.Form):
-    email = forms.EmailField(label="Email")
-    password = forms.CharField(
-        widget=forms.PasswordInput,
-        label="Password"
-    )
+    email = forms.EmailField(widget=forms.EmailInput(attrs={"class": "form-control"}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control"}))
 
     def clean(self):
         cleaned = super().clean()
         email = cleaned.get("email")
         password = cleaned.get("password")
-
         user = authenticate(email=email, password=password)
-
         if not user:
             raise forms.ValidationError("Invalid email or password.")
-
         cleaned["user"] = user
         return cleaned
 
 
-# ----------------------
-# Resource Upload Form
-# ----------------------
 class ResourceForm(forms.ModelForm):
     class Meta:
         model = Resource
         fields = ["title", "description", "subject", "year_group", "file"]
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-control"}),
+            "description": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
+            "subject": forms.Select(attrs={"class": "form-select"}),
+            "year_group": forms.Select(attrs={"class": "form-select"}),
+        }
 
-# -----------------------
-# Post Creation Form
-# -----------------------
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -83,3 +63,17 @@ class PostForm(forms.ModelForm):
             "title": forms.TextInput(attrs={"class": "form-control"}),
             "content": forms.Textarea(attrs={"class": "form-control", "rows": 5}),
         }
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["content"]
+        widgets = {
+            "content": forms.Textarea(attrs={
+                "class": "form-control",
+                "rows": 2,
+                "placeholder": "Write a comment..."
+            })
+        }
+        labels = {"content": ""}
