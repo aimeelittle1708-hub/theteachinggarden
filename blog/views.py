@@ -267,3 +267,58 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("home")
+
+
+# -----------------------------
+# COMMENT EDIT / DELETE
+# -----------------------------
+@login_required
+def edit_comment(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+
+    if comment.author != request.user and not request.user.is_staff:
+        return HttpResponseForbidden("You cannot edit this comment.")
+
+    form = CommentForm(request.POST or None, instance=comment)
+
+    if request.method == "POST" and form.is_valid():
+        updated = form.save(commit=False)
+
+        # editing should re-trigger approval
+        updated.is_approved = False
+        updated.approved_by = None
+        updated.approved_at = None
+        updated.save()
+
+        messages.success(request, "Comment updated. It will reappear once approved.")
+
+        if comment.resource_id:
+            return redirect("resource_detail", pk=comment.resource_id)
+        return redirect("post_detail", pk=comment.post_id)
+
+    return render(request, "edit_comment.html", {"form": form, "comment": comment})
+
+
+@login_required
+def delete_comment(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+
+    if comment.author != request.user and not request.user.is_staff:
+        return HttpResponseForbidden("You cannot delete this comment.")
+
+    if request.method == "POST":
+        resource_id = comment.resource_id
+        post_id = comment.post_id
+        comment.delete()
+        messages.success(request, "Comment deleted.")
+
+        if resource_id:
+            return redirect("resource_detail", pk=resource_id)
+        return redirect("post_detail", pk=post_id)
+
+    return render(request, "confirm_delete_comment.html", {"comment": comment})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("home")
