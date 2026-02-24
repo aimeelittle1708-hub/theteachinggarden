@@ -14,9 +14,6 @@ urlpatterns = [
     path("posts/<int:pk>/", views.post_detail, name="post_detail"),
     path("posts/<int:post_id>/comment/", views.add_post_comment, name="add_post_comment"),
 
-    # About
-    path("about/", views.about, name="about"),
-
     # Auth
     path("register/", views.register_view, name="register"),
     path("login/", views.login_view, name="login"),
