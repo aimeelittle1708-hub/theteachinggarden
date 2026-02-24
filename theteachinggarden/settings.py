@@ -64,6 +64,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
 
     # allauth middleware
     'allauth.account.middleware.AccountMiddleware',
@@ -131,7 +134,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-# Needed for Heroku collectstatic
+# Heroku collectstatic
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media / Cloudinary
