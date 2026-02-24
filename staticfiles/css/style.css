@@ -1,0 +1,165 @@
+
+/* Global background */
+body {
+    background-color: #f7f9f6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar styling */
+.navbar {
+    background-color: #2f5d50 !important;
+}
+
+.navbar .nav-link,
+.navbar-brand {
+    color: #23463e !important;
+}
+
+.navbar .nav-link:hover {
+    opacity: 0.5 !important;
+}
+
+.hero {
+    background: linear-gradient(135deg, #23463e, #6fbf9f) !important;
+    color: white !important;
+    border-radius: 16px;
+}
+
+/* --- Brand palette --- */
+:root{
+  --tg-green: #2f5d50;
+  --tg-green-2: #6fbf9f;
+  --tg-cream: #f3f7f4;
+}
+
+/* Page background */
+body{
+  background: var(--tg-cream);
+}
+
+/* Navbar  */
+.navbar{
+  background: #e7f2e8 !important;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+
+/* Buttons */
+.btn-success{
+  background-color: var(--tg-green) !important;
+  border-color: var(--tg-green) !important;
+}
+
+.btn-success:hover{
+  filter: brightness(0.95);
+}
+
+.btn-outline-success{
+  color: var(--tg-green) !important;
+  border-color: var(--tg-green) !important;
+}
+
+.btn-outline-success:hover{
+  background: var(--tg-green) !important;
+  border-color: var(--tg-green) !important;
+  color: #fff !important;
+}
+
+.hero .btn:focus,
+.hero .btn:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+.hero .btn {
+  min-height: 44px;          
+  padding: 0.7rem 1.1rem;
+  border-radius: 14px;
+}
+
+.hero {
+  color: #fff;
+}
+
+.hero .text-muted,
+.hero .text-white-50 {
+  color: rgba(255,255,255,.9) !important;
+}
+
+/* Cards*/
+.card{
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,.06);
+  overflow: hidden;
+}
+
+.card.shadow-sm{
+  box-shadow: 0 .5rem 1.2rem rgba(0,0,0,.08) !important;
+}
+
+.card:hover{
+  transform: translateY(-2px);
+  transition: transform .15s ease, box-shadow .15s ease;
+  box-shadow: 0 .8rem 1.8rem rgba(0,0,0,.10) !important;
+}
+
+/* Card footer */
+.card-footer{
+  background: transparent !important;
+}
+
+/* Section headings */
+h1, h2, h3, h4, h5 {
+    color: black;
+}
+
+/*  panels */
+.bg-light {
+    background-color: #eef3f1 !important;
+}
+
+/* Footer  */
+footer {
+    background-color: #2f5d50;
+    color:  black;;
+    padding: 1.5rem 0;
+}
+
+/* Alerts */
+.alert-success {
+    background-color: #d9f0e8;
+    border-color: #c2e6d9;
+    color: #2f5d50;
+}
+
+/* Forms */
+.form-control {
+    border-radius: 8px;
+}
+
+.form-control:focus {
+    border-color: #3c7a6d;
+    box-shadow: 0 0 0 0.2rem rgba(60,122,109,0.15);
+}
+
+/* Footer */
+.site-footer {
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  font-size: 0.9rem;
+}
+
+.site-footer h5,
+.site-footer h6 {
+  color: #2d6a4f;
+}
+
+.footer-link {
+  text-decoration: none;
+  color: #495057;
+}
+
+.footer-link:hover {
+  color: #2d6a4f;
+  text-decoration: underline;
+}
