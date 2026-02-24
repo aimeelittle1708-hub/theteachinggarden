@@ -2,6 +2,9 @@
 {% block content %}
 
 <h1 class="fw-bold mb-4">Resources</h1>
+<p class="text-muted">
+  Browse approved teaching resources by subject and year group. Use the filters to narrow down results.
+</p>
 
 <form method="get" class="row g-3 mb-4">
 
@@ -68,7 +71,7 @@
 
         </div>
 
-        <!-- ✅ CORRECT FOOTER SECTION -->
+        <!--  FOOTER SECTION -->
         <div class="card-footer bg-white border-0 pb-3">
 
           <a class="btn btn-success btn-sm" href="{% url 'resource_detail' r.id %}">
@@ -93,9 +96,11 @@
 
       </div>
     </div>
-  {% empty %}
-    <p>No resources found.</p>
-  {% endfor %}
+ {% empty %}
+  <div class="alert alert-secondary">
+    No resources found. Try a different subject/year or clear the search.
+  </div>
+{% endfor %}
 </div>
 
 {% endblock %}

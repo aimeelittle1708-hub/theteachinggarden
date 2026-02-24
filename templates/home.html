@@ -1,6 +1,70 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="display-4 fw-bold">The Teaching Garden</h1>
-<p class="lead">Cultivate knowledge and watch it grow.</p>
-<p>A collaborative ecosystem for educators to share, nurture, and harvest high-quality teaching resources vetted by a community of peers.</p>
+
+<div class="p-5 mb-4 bg-light rounded-3 border">
+  <div class="container-fluid py-4">
+    <h1 class="display-6 fw-bold">🌱 The Teaching Garden</h1>
+    <p class="col-md-10 fs-5 text-muted mb-4">
+      A friendly hub for teachers to share resources, post ideas, and support each other.
+      Upload lesson materials, browse by subject and year group, and join the conversation.
+    </p>
+
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-success btn-lg" href="{% url 'resources' %}">Browse Resources</a>
+      <a class="btn btn-outline-success btn-lg" href="{% url 'posts' %}">View Posts</a>
+      {% if user.is_authenticated %}
+        <a class="btn btn-outline-secondary btn-lg" href="{% url 'upload_resource' %}">Upload a Resource</a>
+      {% else %}
+        <a class="btn btn-outline-secondary btn-lg" href="{% url 'register' %}">Create an Account</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title fw-bold">📚 Share Resources</h5>
+        <p class="card-text text-muted">
+          Upload PDFs, Word documents, PowerPoints, and images.
+          Resources are moderated to keep quality high.
+        </p>
+      </div>
+      <div class="card-footer bg-white border-0">
+        <a href="{% url 'resources' %}" class="btn btn-sm btn-success">Explore</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title fw-bold">📝 Teacher Posts</h5>
+        <p class="card-text text-muted">
+          Share classroom wins, tips, and reflections. Comment and connect with other teachers.
+        </p>
+      </div>
+      <div class="card-footer bg-white border-0">
+        <a href="{% url 'posts' %}" class="btn btn-sm btn-success">Read posts</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title fw-bold">💬 Community</h5>
+        <p class="card-text text-muted">
+          Leave comments on resources and posts. Your own comments are always visible to you,
+          and public comments appear after approval.
+        </p>
+      </div>
+      <div class="card-footer bg-white border-0">
+        <a href="{% url 'about' %}" class="btn btn-sm btn-outline-success">Learn more</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

@@ -1,19 +1,68 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1 class="fw-bold mb-3">About The Teaching Garden</h1>
-<p class="text-muted">
-  A hub for sharing and discovering teaching resources.
-</p>
+<div class="row g-4 align-items-start">
+  <div class="col-lg-7">
+    <h1 class="fw-bold mb-3">About The Teaching Garden</h1>
+    <p class="text-muted fs-5">
+      The Teaching Garden is a simple resource-sharing space built for teachers and trainees.
+      Upload classroom-ready materials, browse by subject and year group, and learn from each other through posts and comments.
+    </p>
 
-<hr class="my-4">
+    <div class="mt-4 p-4 bg-light border rounded">
+      <h5 class="fw-bold mb-2">Our values</h5>
+      <ul class="text-muted mb-0">
+        <li>Keep resources practical and classroom-ready</li>
+        <li>Be kind, constructive, and supportive</li>
+        <li>Share freely and credit others where possible</li>
+      </ul>
+    </div>
 
-<h3 class="fw-bold mb-3">Contact</h3>
+    <div class="mt-4">
+      <h5 class="fw-bold mb-2">How moderation works</h5>
+      <p class="text-muted mb-0">
+        New uploads and comments may be held for approval to keep the hub safe and high-quality.
+        You can still view your own pending comments while you wait.
+      </p>
+    </div>
+  </div>
 
-<form method="post" class="card p-4 shadow-sm">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button class="btn btn-success">Send</button>
-</form>
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h3 class="fw-bold mb-3">Contact</h3>
+        <p class="text-muted">
+          Send a message using the form below. You’ll see a confirmation message after submission.
+        </p>
+
+        <form method="post">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            {{ form.name }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            {{ form.email }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Subject</label>
+            {{ form.subject }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Message</label>
+            {{ form.message }}
+          </div>
+
+          <button class="btn btn-success w-100">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
