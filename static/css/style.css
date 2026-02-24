@@ -121,7 +121,7 @@ h1, h2, h3, h4, h5 {
 /* Footer  */
 footer {
     background-color: #2f5d50;
-    color: white;
+    color:  black;;
     padding: 1.5rem 0;
 }
 
@@ -140,4 +140,26 @@ footer {
 .form-control:focus {
     border-color: #3c7a6d;
     box-shadow: 0 0 0 0.2rem rgba(60,122,109,0.15);
+}
+
+/* Footer */
+.site-footer {
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  font-size: 0.9rem;
+}
+
+.site-footer h5,
+.site-footer h6 {
+  color: #2d6a4f;
+}
+
+.footer-link {
+  text-decoration: none;
+  color: #495057;
+}
+
+.footer-link:hover {
+  color: #2d6a4f;
+  text-decoration: underline;
 }
