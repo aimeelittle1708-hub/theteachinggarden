@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
     # local apps
     'blog',
+    'about',
 ]
 
 SITE_ID = 1  # Required for django-allauth
