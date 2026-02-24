@@ -111,6 +111,43 @@ class Resource(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+    
+    @property
+    def file_url(self):
+        """
+        Some viewers require https.
+        """
+        url = self.file.url
+        if url and url.startswith("http://"):
+            url = url.replace("http://", "https://")
+        return url
+
+    @property
+    def file_ext(self):
+        url = (self.file.url or "").split("?")[0].lower()
+        if "." not in url:
+            return ""
+        return url.rsplit(".", 1)[-1]
+
+    @property
+    def is_image(self):
+        return self.file_ext in {"jpg", "jpeg", "png", "gif", "webp"}
+
+    @property
+    def is_pdf(self):
+        return self.file_ext == "pdf"
+
+    @property
+    def is_office(self):
+        return self.file_ext in {"doc", "docx", "ppt", "pptx"}
+
+    @property
+    def office_viewer_url(self):
+        """
+        Office online viewer needs a public URL.
+        """
+        from urllib.parse import quote
+        return f"https://view.officeapps.live.com/op/embed.aspx?src={quote(self.file_url)}"
 
     def __str__(self):
         return self.title
@@ -146,10 +183,6 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-
-# ----------------------
-# Comment Model
-# ----------------------
 # ----------------------
 # Comment Model
 # ----------------------
