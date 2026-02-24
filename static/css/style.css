@@ -1,0 +1,83 @@
+
+/* Global background */
+body {
+    background-color: #f7f9f6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar styling */
+.navbar {
+    background-color: #2f5d50 !important;
+}
+
+.navbar .nav-link,
+.navbar-brand {
+    color: #23463e !important;
+}
+
+.navbar .nav-link:hover {
+    opacity: 0.5 !important;
+}
+
+.hero {
+    background: linear-gradient(135deg, #23463e, #6fbf9f) !important;
+    color: white !important;
+    border-radius: 16px;
+}
+
+/* Buttons */
+.btn-success {
+    background-color: #3c7a6d;
+    border-color: #3c7a6d;
+}
+
+.btn-success:hover {
+    background-color: #2f5d50;
+    border-color: #2f5d50;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 12px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+/* Section headings */
+h1, h2, h3, h4, h5 {
+    color: black;
+}
+
+/* Light panels */
+.bg-light {
+    background-color: #eef3f1 !important;
+}
+
+/* Footer (if you add one later) */
+footer {
+    background-color: #2f5d50;
+    color: white;
+    padding: 1.5rem 0;
+}
+
+/* Alerts */
+.alert-success {
+    background-color: #d9f0e8;
+    border-color: #c2e6d9;
+    color: #2f5d50;
+}
+
+/* Forms */
+.form-control {
+    border-radius: 8px;
+}
+
+.form-control:focus {
+    border-color: #3c7a6d;
+    box-shadow: 0 0 0 0.2rem rgba(60,122,109,0.15);
+}
