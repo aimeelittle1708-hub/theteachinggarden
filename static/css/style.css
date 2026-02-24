@@ -32,12 +32,12 @@ body {
   --tg-cream: #f3f7f4;
 }
 
-/* Page background like your design */
+/* Page background */
 body{
   background: var(--tg-cream);
 }
 
-/* Navbar polish */
+/* Navbar  */
 .navbar{
   background: #e7f2e8 !important;
   border-bottom: 1px solid rgba(0,0,0,.06);
@@ -64,7 +64,29 @@ body{
   color: #fff !important;
 }
 
-/* Cards: softer + more premium */
+.hero .btn:focus,
+.hero .btn:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+.hero .btn {
+  min-height: 44px;          
+  padding: 0.7rem 1.1rem;
+  border-radius: 14px;
+}
+
+.hero {
+  color: #fff;
+}
+
+.hero .text-muted,
+.hero .text-white-50 {
+  color: rgba(255,255,255,.9) !important;
+}
+
+/* Cards*/
 .card{
   border-radius: 18px;
   border: 1px solid rgba(0,0,0,.06);
@@ -81,7 +103,7 @@ body{
   box-shadow: 0 .8rem 1.8rem rgba(0,0,0,.10) !important;
 }
 
-/* Card footer cleaner */
+/* Card footer */
 .card-footer{
   background: transparent !important;
 }
@@ -91,12 +113,12 @@ h1, h2, h3, h4, h5 {
     color: black;
 }
 
-/* Light panels */
+/*  panels */
 .bg-light {
     background-color: #eef3f1 !important;
 }
 
-/* Footer (if you add one later) */
+/* Footer  */
 footer {
     background-color: #2f5d50;
     color: white;
