@@ -25,27 +25,65 @@ body {
     border-radius: 16px;
 }
 
+/* --- Brand palette --- */
+:root{
+  --tg-green: #2f5d50;
+  --tg-green-2: #6fbf9f;
+  --tg-cream: #f3f7f4;
+}
+
+/* Page background like your design */
+body{
+  background: var(--tg-cream);
+}
+
+/* Navbar polish */
+.navbar{
+  background: #e7f2e8 !important;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+
 /* Buttons */
-.btn-success {
-    background-color: #3c7a6d;
-    border-color: #3c7a6d;
+.btn-success{
+  background-color: var(--tg-green) !important;
+  border-color: var(--tg-green) !important;
 }
 
-.btn-success:hover {
-    background-color: #2f5d50;
-    border-color: #2f5d50;
+.btn-success:hover{
+  filter: brightness(0.95);
 }
 
-/* Cards */
-.card {
-    border: none;
-    border-radius: 12px;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+.btn-outline-success{
+  color: var(--tg-green) !important;
+  border-color: var(--tg-green) !important;
 }
 
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+.btn-outline-success:hover{
+  background: var(--tg-green) !important;
+  border-color: var(--tg-green) !important;
+  color: #fff !important;
+}
+
+/* Cards: softer + more premium */
+.card{
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,.06);
+  overflow: hidden;
+}
+
+.card.shadow-sm{
+  box-shadow: 0 .5rem 1.2rem rgba(0,0,0,.08) !important;
+}
+
+.card:hover{
+  transform: translateY(-2px);
+  transition: transform .15s ease, box-shadow .15s ease;
+  box-shadow: 0 .8rem 1.8rem rgba(0,0,0,.10) !important;
+}
+
+/* Card footer cleaner */
+.card-footer{
+  background: transparent !important;
 }
 
 /* Section headings */
