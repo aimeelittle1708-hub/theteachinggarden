@@ -560,19 +560,6 @@ Key fields:
 
 ---
 
-## About App (Content Pages)
-
-You mentioned: `about/models.py -`  
-If your About page is currently static, it may not need a model. However, if you want admins to edit About content in the Django admin, the recommended model would be something like:
-
-- `title`
-- `content`
-- `updated_at`
-
-If you paste your `about/models.py` (even if empty), I can add a short “About app” schema section that matches exactly what you used.
-
----
-
 ## Authentication & Permissions
 
 ### Role-Based Access
