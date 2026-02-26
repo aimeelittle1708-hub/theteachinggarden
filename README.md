@@ -428,13 +428,11 @@ No Errors found.
 <br>
 ### HTML validation from W3C
 <img width="1771" height="670" alt="image" src="https://github.com/user-attachments/assets/5debb601-316c-417f-a662-45439bd864af" />
-No Errors found.
+No Errors found on all pages.
 
 ### Ligthouse test
 Lighthouse testing shows good performance and best practises.
 <img width="586" height="721" alt="image" src="https://github.com/user-attachments/assets/8f862d14-4ebd-4341-acc7-6204fa37c634" />
-
-- If you want: add basic Django unit tests later (optional)
 
 ---
 
@@ -555,15 +553,26 @@ As a novice developer I did make the mistake of pushing my secret key to GitHub,
 ---
 ## Future Development
 This was the first iteration of The Teaching Garden. In future iterations I would like to implement the following features to the website:
+
   -Resource rating and review system
+  
   -More advanced search functionality
+  
   -User profile customisation and bio
+  
   -Tag-based filtering and categorisation
+  
   -File preview functionality (PDF, images)
+  
   -Admin approval workflow for moderation
+  
   -Pagination improvements for large datasets
+  
   -Email notifications for saved resources
+  
   -Social sharing capabilities
+
+  -Games section to aid teachers and students in their lessons.
 
 ---
 ## Credits (#credits)
