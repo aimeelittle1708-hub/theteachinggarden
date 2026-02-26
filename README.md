@@ -400,7 +400,176 @@ Fields include:
 
 ## Entity Relationship Diagram
 <p><img width="989" height="544" alt="image" src="https://github.com/user-attachments/assets/8bd002b1-cfce-49ab-b52e-7a2145e0c404" />
-- Short explanation of relationship choices (FK + related_name)
+
+## Database Schema (ERD) — Planned vs Implemented
+
+This project began with an early ERD to map out core entities (Users, Posts, Resources, Comments, Subjects, and a Contact form). During development, the schema evolved to better match real user behaviour, simplify admin moderation, and align with Django best practice.
+
+---
+
+## Original ERD (Initial Design)
+
+### Entities in the ERD
+- **User**
+  - Planned fields: `username`, `password`
+  - Intended to be the owner/author of: posts, resources, comments
+
+- **Post**
+  - Planned fields included: `title`, `content`, `yr_group`, `topic`
+  - Linked to `Subject` and `Sub-Subject` using foreign keys
+  - Had many comments
+
+- **Resource**
+  - Planned fields included: `title`, `description`, `file_url`
+  - Linked to `User` (uploader)
+  - Included a `post_id` relationship (suggesting resources could attach to posts)
+
+- **Comment**
+  - Linked to `User` and `Post`
+  - Designed only for comments under posts (not resources)
+
+- **Subject / Sub-Subject**
+  - Separate lookup tables for organising posts by curriculum categories
+
+- **Contact**
+  - Stored messages (`name`, `email`, `message`) and a moderation field `is_resolved`
+
+### Key assumptions in the original ERD
+- Categories (`Subject/Sub-Subject`) would be dynamic tables.
+- Resources might belong inside/under posts.
+- Comments were only for posts.
+
+---
+
+## Final Implementation (Models Used in Development)
+
+### ✅ 1) User: moved to a Custom User Model (email-based login)
+
+**Implemented model:** `blog.User` (custom authentication)
+
+- `email` (unique) used as the login credential (`USERNAME_FIELD = "email"`)
+- `name` used for display on the UI
+- `is_staff`, `is_active` for permissions and admin role separation
+- Uses `AbstractBaseUser` + `PermissionsMixin`
+
+**Why it changed**
+- Email login is more natural for real users.
+- Using Django’s permissions (`is_staff`/`is_superuser`) makes moderation and admin control much easier.
+- Supports role-based access (staff can approve/delete others’ content).
+
+---
+
+### ✅ 2) Resource: simplified relationships + moderation added + file preview support
+
+**Implemented model:** `blog.Resource`
+
+Fields include:
+- Core content:
+  - `title`, `description`, `subject`, `year_group`
+- File storage:
+  - `file = CloudinaryField(..., resource_type="raw")`
+- Ownership:
+  - `uploaded_by = ForeignKey(settings.AUTH_USER_MODEL)`
+- Moderation:
+  - `is_approved` (default `False`)
+  - `approved_by`, `approved_at`
+- Timestamp:
+  - `created_at`
+
+Additional properties added (development improvement):
+- `file_url` (forces https for some viewers)
+- `file_ext`, `is_image`, `is_pdf`, `is_office`
+- `office_viewer_url` (Office online preview via public URL)
+
+**What changed vs ERD**
+- ✅ The `post_id` link was removed (resources are standalone).
+- ✅ Subject and year are stored as **choices** (not separate tables).
+- ✅ A moderation workflow was added (`is_approved`, `approved_by`, `approved_at`).
+- ✅ File preview logic was introduced (PDF/Office/image detection).
+
+**Why it changed**
+- Resources are typically browsed independently of posts.
+- Hard-coded subject/year choices reduce database complexity and support filtering easily.
+- Moderation is important for safeguarding and quality control.
+- Preview capability improves UX without changing the schema.
+
+---
+
+### ✅ 3) Post: kept simple + moderation added
+
+**Implemented model:** `blog.Post`
+
+Fields include:
+- `title`, `content`
+- `author = ForeignKey(settings.AUTH_USER_MODEL)`
+- Moderation fields:
+  - `is_approved`, `approved_by`, `approved_at`
+- `created_at`
+
+**What changed vs ERD**
+- ❌ Removed planned fields like `yr_group`, `topic`
+- ❌ Removed `Subject`/`Sub-Subject` foreign keys
+- ✅ Added approval moderation
+
+**Why it changed**
+- This reduced complexity for MVP delivery and focused posts on being a simple “teacher feed”.
+- Categorisation was prioritised for Resources instead.
+- Admin moderation supports safeguarding and ensures quality.
+
+---
+
+### ✅ 4) Comment: expanded to support BOTH posts and resources
+
+**Implemented model:** `blog.Comment`
+
+Key fields:
+- Supports commenting on either object:
+  - `post = ForeignKey(Post, null=True, blank=True)`
+  - `resource = ForeignKey(Resource, null=True, blank=True)`
+- `author = ForeignKey(settings.AUTH_USER_MODEL)`
+- `content`
+- Moderation:
+  - `is_approved`, `approved_by`, `approved_at`
+- `created_at`
+
+**What changed vs ERD**
+- ✅ Comments can now apply to **resources as well as posts**.
+- ✅ Moderation fields were added.
+
+**Why it changed**
+- The final site includes discussions under resources (useful feedback and collaboration).
+- A single flexible Comment model is easier than maintaining separate comment tables.
+- Moderation keeps public comments safe and appropriate.
+
+> Note: In the current implementation, `post` and `resource` are both nullable. In future, this could be enforced with validation so a comment must belong to exactly one of them.
+
+---
+
+## Summary of the Schema Evolution
+
+### Removed / Simplified
+- `Subject` and `Sub-Subject` tables were replaced with Django `choices`
+- The `Resource -> Post` link was removed (resources became standalone)
+- Post categorisation fields were deferred for MVP scope
+
+### Added (Real-world readiness)
+- Moderation / approval fields across Resources, Posts, Comments
+- Custom user authentication (email login)
+- File preview helper properties for Cloudinary assets
+- Stronger role-based permissions (staff can manage all content)
+
+---
+
+## About App (Content Pages)
+
+You mentioned: `about/models.py -`  
+If your About page is currently static, it may not need a model. However, if you want admins to edit About content in the Django admin, the recommended model would be something like:
+
+- `title`
+- `content`
+- `updated_at`
+
+If you paste your `about/models.py` (even if empty), I can add a short “About app” schema section that matches exactly what you used.
 
 ---
 
