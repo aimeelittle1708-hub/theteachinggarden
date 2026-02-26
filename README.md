@@ -649,6 +649,9 @@ This was the first iteration of The Teaching Garden. In future iterations I woul
 - Django Official Documentation
 - Discord Community Support
 - Lucidchart for ERD design tools
+<br>
 -The Code Institute
+<br>
   -Mark, Tom, and Alex - Instructors & Support
+  <br>
   -My wonderful Code Institute Cohort - Class of March 2026
