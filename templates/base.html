@@ -10,96 +10,158 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="icon" href="{% static 'images/favicon.ico' %}">
-  
-
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-  <nav class="navbar navbar-expand-lg bg-light px-4">
-    <a class="navbar-brand fw-bold" href="/">🌱 The Teaching Garden</a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-      <span class="navbar-toggler-icon"></span>
+  <!-- Skip link (keyboard accessibility) -->
+  <a class="visually-hidden-focusable skip-link" href="#main-content">
+    Skip to main content
+  </a>
+
+  <nav class="navbar navbar-expand-lg bg-light px-4" role="navigation" aria-label="Main navigation">
+    <a class="navbar-brand fw-bold" href="{% url 'home' %}" aria-label="The Teaching Garden home">
+      🌱 The Teaching Garden
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#nav"
+      aria-controls="nav"
+      aria-expanded="false"
+      aria-label="Toggle navigation menu">
+      <span class="navbar-toggler-icon" aria-hidden="true"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="nav">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="/resources/">Resources</a></li>
-        <li class="nav-item"><a class="nav-link" href="/posts/">Posts</a></li>
-        <li class="nav-item"><a class="nav-link" href="/about/">About</a></li>
+
+        <li class="nav-item">
+          <a class="nav-link"
+             href="{% url 'home' %}"
+             {% if request.resolver_match.url_name == "home" %}aria-current="page"{% endif %}>
+            Home
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link"
+             href="{% url 'resources' %}"
+             {% if request.resolver_match.url_name == "resources" %}aria-current="page"{% endif %}>
+            Resources
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link"
+             href="{% url 'posts' %}"
+             {% if request.resolver_match.url_name == "posts" %}aria-current="page"{% endif %}>
+            Posts
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link"
+             href="{% url 'about' %}"
+             {% if request.resolver_match.url_name == "about" %}aria-current="page"{% endif %}>
+            About
+          </a>
+        </li>
 
         {% if user.is_authenticated %}
-        <li class="nav-item"><a class="nav-link" href="/upload/">Upload</a></li>
-        <li class="nav-item"><span class="nav-link">Hi, {{ user.name }}</span></li>
-        <li class="nav-item"><a class="btn btn-outline-success ms-lg-2" href="/logout/">Logout</a></li>
+          <li class="nav-item">
+            <a class="nav-link"
+               href="{% url 'upload_resource' %}"
+               {% if request.resolver_match.url_name == "upload_resource" %}aria-current="page"{% endif %}>
+              Upload
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <span class="nav-link" aria-label="Logged in user">
+              Hi, {{ user.name }}
+            </span>
+          </li>
+
+          <li class="nav-item">
+            <a class="btn btn-outline-success ms-lg-2"
+               href="{% url 'logout' %}"
+               aria-label="Log out of your account">
+              Logout
+            </a>
+          </li>
         {% else %}
-        <li class="nav-item"><a class="nav-link" href="/login/">Login</a></li>
-        <li class="nav-item"><a class="btn btn-success ms-lg-2" href="/register/">Sign Up</a></li>
+          <li class="nav-item">
+            <a class="nav-link"
+               href="{% url 'login' %}"
+               {% if request.resolver_match.url_name == "login" %}aria-current="page"{% endif %}>
+              Login
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="btn btn-success ms-lg-2"
+               href="{% url 'register' %}"
+               aria-label="Create an account">
+              Sign Up
+            </a>
+          </li>
         {% endif %}
-        {% if messages %}
-        <div class="container mt-3">
-          {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-          {% endfor %}
-        </div>
-        {% endif %}
+
       </ul>
     </div>
   </nav>
 
-<main class="container py-5 flex-grow-1">
+  <main id="main-content" class="container py-5 flex-grow-1" tabindex="-1">
+
     {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ message }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-    {% endfor %}
+      <div class="mb-4" aria-live="polite" aria-atomic="true">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags|default:'success' }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close alert"></button>
+          </div>
+        {% endfor %}
+      </div>
     {% endif %}
+
     {% block content %}{% endblock %}
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <footer class="site-footer mt-auto py-4" role="contentinfo">
+    <div class="container">
+      <div class="row gy-3">
 
-<footer class="site-footer mt-auto py-4">
-  <div class="container">
-    <div class="row gy-3">
+        <div class="col-md-4">
+          <h5 class="fw-bold mb-2">🌱 The Teaching Garden</h5>
+          <p class="small mb-0">
+            A collaborative space for primary educators to share resources,
+            ideas and professional reflections.
+          </p>
+        </div>
 
-      <!-- Brand -->
-      <div class="col-md-4">
-        <h5 class="fw-bold mb-2">🌱 The Teaching Garden</h5>
-        <p class="small mb-0">
-          A collaborative space for primary educators to share resources,
-          ideas and professional reflections.
-        </p>
+        <div class="col-md-4">
+          <h6 class="fw-bold mb-2">Quick Links</h6>
+          <ul class="list-unstyled small">
+            <li><a href="{% url 'home' %}" class="footer-link">Home</a></li>
+            <li><a href="{% url 'resources' %}" class="footer-link">Resources</a></li>
+            <li><a href="{% url 'posts' %}" class="footer-link">Posts</a></li>
+            <li><a href="{% url 'about' %}" class="footer-link">About</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-4">
+          <h6 class="fw-bold mb-2">Community</h6>
+          <p class="small mb-1">Supporting teacher wellbeing and inclusive practice.</p>
+          <p class="small mb-0">&copy; {% now "Y" %} The Teaching Garden</p>
+        </div>
+
       </div>
-
-      <!-- Quick Links -->
-      <div class="col-md-4">
-        <h6 class="fw-bold mb-2">Quick Links</h6>
-        <ul class="list-unstyled small">
-          <li><a href="{% url 'home' %}" class="footer-link">Home</a></li>
-          <li><a href="{% url 'resources' %}" class="footer-link">Resources</a></li>
-          <li><a href="{% url 'posts' %}" class="footer-link">Posts</a></li>
-          <li><a href="{% url 'about' %}" class="footer-link">About</a></li>
-        </ul>
-      </div>
-
-      <!-- Contact -->
-      <div class="col-md-4">
-        <h6 class="fw-bold mb-2">Community</h6>
-        <p class="small mb-1">
-          Supporting teacher wellbeing and inclusive practice.
-        </p>
-        <p class="small mb-0">
-          &copy; {% now "Y" %} The Teaching Garden
-        </p>
-      </div>
-
     </div>
-  </div>
-</footer>
-</body>
+  </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

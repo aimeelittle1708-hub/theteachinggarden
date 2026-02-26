@@ -48,7 +48,7 @@
         <div class="card-body">
 
           <div class="d-flex align-items-start justify-content-between gap-2">
-            <h5 class="card-title mb-1">{{ r.title }}</h5>
+            <h2 class="card-title mb-1 h5">{{ r.title }}</h2>
 
             {% if user.is_staff and not r.is_approved %}
               <span class="badge bg-warning text-dark">Pending</span>

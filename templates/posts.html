@@ -6,7 +6,7 @@
 {% for p in posts %}
   <div class="card shadow-sm mb-3">
     <div class="card-body">
-      <h5 class="mb-1">{{ p.title }}</h5>
+      <h2 class="mb-1 h5">{{ p.title }}</h2>
 
       <div class="text-muted small mb-2">
         {{ p.author.name }} • {{ p.created_at|date:"d M Y, H:i" }}
