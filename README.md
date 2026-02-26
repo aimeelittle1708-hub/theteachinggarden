@@ -1,3 +1,5 @@
+<img width="412" height="80" alt="image" src="https://github.com/user-attachments/assets/8c5320af-5f86-4ed1-a5d7-134114b2ecfc" />
+
 # 🌱 The Teaching Garden
 
 The Teaching Garden is a full-stack Django web application designed as a supportive, moderated community hub for primary educators. Users can upload teaching resources, write reflective posts, and comment on content. Admin moderation ensures a safe and professional space. It uses HTML, CSS and Django.
