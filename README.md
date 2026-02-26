@@ -593,7 +593,7 @@ The primary validation issue related to heading structure and semantic HTML. Boo
 
 This was corrected by replacing the `<h5>` element with an `<h2>` to maintain proper hierarchical structure. The Bootstrap `h5` class was then applied within the class attribute to preserve the intended visual styling while maintaining semantic correctness:
 
-```html
+html
 <h2 class="mb-1 h5">{{ p.title }}</h2>
 
 ---
