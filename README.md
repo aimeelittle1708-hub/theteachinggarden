@@ -581,9 +581,20 @@ AI tools were used to support development in ways aligned with the project goals
 - Supporting view/model refactoring decisions
 - Improving UX messaging and accessibility improvements
 
-### Reflection (brief, distinction-friendly)
-AI accelerated development by reducing time spent on debugging repetitive syntax errors and by helping restructure views/models in a maintainable way. I validated AI suggestions by cross-checking Django documentation and testing changes incrementally in local development before committing.
-As a novice developer I did make the mistake of pushing my secret key to GitHub, but was able to change the key and have secured the new one in the env.py file which was then ignored and not pushed by using .gitignore.
+### Reflection
+<p>AI accelerated development by reducing time spent on debugging repetitive syntax errors and by helping restructure views/models in a maintainable way. I validated AI suggestions by cross-checking Django documentation and testing changes incrementally in local development before committing.<p/>
+<p>As a novice developer I did make the mistake of pushing my secret key to GitHub, but was able to change the key and have secured the new one in the env.py file which was then ignored and not pushed by using .gitignore.</p>
+
+## Bug Fixes & Validation Issues
+
+During deployment and validation testing, a small number of issues were identified and resolved.
+
+The primary validation issue related to heading structure and semantic HTML. Bootstrap styling had been applied using an `<h5>` element immediately following an `<h1>` heading. This resulted in a WCAG accessibility warning due to skipped heading levels (jumping from `<h1>` to `<h5>` without intermediate `<h2>`, `<h3>`, or `<h4>` elements).
+
+This was corrected by replacing the `<h5>` element with an `<h2>` to maintain proper hierarchical structure. The Bootstrap `h5` class was then applied within the class attribute to preserve the intended visual styling while maintaining semantic correctness:
+
+```html
+<h2 class="mb-1 h5">{{ p.title }}</h2>
 
 ---
 ## Future Development
