@@ -209,6 +209,8 @@ Wireframes were created during the planning stage to map:
 Homepage Wireframes
 <br>
 <img width="216" height="579" alt="image" src="https://github.com/user-attachments/assets/adc4231b-72b5-4766-ba04-a58e2f680612" /> 
+<br>
+<br>
 <img width="876" height="678" alt="image" src="https://github.com/user-attachments/assets/4b1415d9-2f49-4c7d-b77d-fb0bb54f191a" />
 <br>
 <br>
@@ -216,13 +218,18 @@ Resources Page Wireframes
 <br>
 <br>
 <img width="831" height="710" alt="image" src="https://github.com/user-attachments/assets/c9f6cc97-dfd4-44dc-90a9-7f6efab47437" /> 
+<br>
+<br>
 <img width="215" height="585" alt="image" src="https://github.com/user-attachments/assets/c5dd6ba2-bc83-4cf2-851a-9d82300a3e8e" />
 <br>
 <br>
 Post page Wireframes
 <br>
 <br>
-
+<img width="244" height="597" alt="image" src="https://github.com/user-attachments/assets/85fb3e42-f009-43be-8936-cf673aa92e45" />
+<br>
+<br>
+<img width="828" height="703" alt="image" src="https://github.com/user-attachments/assets/60cd33db-4afa-4b5d-900f-fabfbb5d7ca3" />
 
 ### Design Evolution
 
