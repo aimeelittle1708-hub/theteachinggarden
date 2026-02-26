@@ -427,8 +427,8 @@ No Errors found.
 <br>
 <br>
 ### HTML validation from W3C
- <img width="1763" height="785" alt="image" src="https://github.com/user-attachments/assets/a90c3a23-aeaa-4a5d-8277-b46aac5672d8" />
-1 error found due to heading sizes of the cards. It statges it skips 3 heading sizes, but this was intentional for the layout and design I wanted to use.
+<img width="1771" height="670" alt="image" src="https://github.com/user-attachments/assets/5debb601-316c-417f-a662-45439bd864af" />
+No Errors found.
 
 ### Ligthouse test
 Lighthouse testing shows good performance and best practises.
