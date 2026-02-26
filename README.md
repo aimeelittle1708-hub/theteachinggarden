@@ -577,9 +577,3 @@ This was the first iteration of The Teaching Garden. In future iterations I woul
 -The Code Institute
   -Mark, Tom, and Alex - Instructors & Support
   -My wonderful Code Institute Cohort - Class of March 2026
-
-
-
-
-
-

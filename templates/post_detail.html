@@ -12,7 +12,7 @@
 </div>
 
 {% if user.is_authenticated and my_pending_comments %}
-  <h5 class="fw-bold mt-4">Your pending comments</h5>
+  <h2 class="fw-bold mt-4 h5">Your pending comments</h2>
   {% for c in my_pending_comments %}
     <div class="border rounded p-2 mb-2">
       <span class="badge bg-warning text-dark">Pending approval</span>
@@ -27,7 +27,7 @@
   <hr class="my-4">
 {% endif %}
 
-<h4 class="fw-bold mb-3">Comments</h4>
+<h2 class="fw-bold h4 mb-3">Comments</h2>
 
 {% for c in comments %}
   <div class="border rounded p-2 mb-2">
@@ -53,7 +53,7 @@
 <hr class="my-4">
 
 {% if user.is_authenticated %}
-  <h5 class="fw-bold">Leave a comment</h5>
+  <h2 class="fw-bold h5">Leave a comment</h2>
 
   <form method="post" action="{% url 'add_post_comment' post.id %}">
     {% csrf_token %}
