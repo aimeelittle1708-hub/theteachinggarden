@@ -451,15 +451,23 @@ No Errors found on all pages.
 
 ### Ligthouse test
 Lighthouse testing shows good performance and best practises.
+<br>
 Home Page
+<br>
 <img width="599" height="603" alt="image" src="https://github.com/user-attachments/assets/12f67f3c-4860-4896-babc-00d0523ea8bc" />
+<br>
 Posts
+<br>
 <img width="591" height="670" alt="image" src="https://github.com/user-attachments/assets/6b85c043-fb18-4086-b94c-f0869c3c4186" />
+<br>
 Resources
+<br>
 <img width="598" height="662" alt="image" src="https://github.com/user-attachments/assets/57feaada-806e-41ac-a3a3-eb63030c1bcc" />
+<br>
 About 
+<br>
 <img width="603" height="665" alt="image" src="https://github.com/user-attachments/assets/a2df35f6-f361-4860-8d76-6fd8ef0c0799" />
-
+<br>
 
 ---
 
