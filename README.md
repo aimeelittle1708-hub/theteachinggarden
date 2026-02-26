@@ -36,6 +36,12 @@ password - abc123
 
 ## Project Goals
 
+## Project Rationale
+
+I chose to develop The Teaching Garden because of my own background in education and my first-hand understanding of the pressures faced by teachers. Time is one of the most limited and valuable resources in the profession. Planning, marking, assessment, pastoral care, and administrative responsibilities often extend well beyond contracted hours. Through my experience, I have recognised how powerful resource-sharing can be in reducing workload and supporting teacher wellbeing.
+
+This project was designed with that reality in mind. By creating a moderated platform where educators can upload, access, and discuss teaching materials, I aimed to promote collaboration rather than isolation. The intention is not simply to provide downloadable content, but to foster a supportive professional community where teachers feel empowered to share ideas, reflections, and strategies. In doing so, the platform aligns with a wider goal of improving sustainability within the profession and contributing, in a small but meaningful way, to teacher retention and wellbeing.
+
 ### Primary Objectives
 - Provide a clean, responsive platform for teachers to:
   - Share downloadable resources (Cloudinary storage)
@@ -594,7 +600,21 @@ The primary validation issue related to heading structure and semantic HTML. Boo
 This was corrected by replacing the `<h5>` element with an `<h2>` to maintain proper hierarchical structure. The Bootstrap `h5` class was then applied within the class attribute to preserve the intended visual styling while maintaining semantic correctness:
 
 html
-<h2 class="mb-1 h5">{{ p.title }}</h2>
+`<h2 class="mb-1 h5">{{ p.title }}</h2>`
+
+This solution ensured:
+
+Proper heading hierarchy
+
+Improved accessibility compliance
+
+Valid HTML structure
+
+Preservation of intended visual design
+
+Following this correction, the site successfully passed HTML validation checks without structural heading errors.
+
+Additional minor styling inconsistencies discovered during deployment were resolved through CSS adjustments to ensure consistent spacing and responsive behaviour across devices.
 
 ---
 ## Future Development
