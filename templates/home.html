@@ -10,14 +10,29 @@
     </p>
 
     <div class="d-flex flex-wrap gap-2">
-     <a class="btn btn-light btn-lg" href="{% url 'resources' %}">Browse Resources</a>
-<a class="btn btn-outline-light btn-lg" href="{% url 'posts' %}">View Posts</a>
 
-{% if user.is_authenticated %}
-  <a class="btn btn-dark btn-lg" href="{% url 'upload_resource' %}">Upload a Resource</a>
-{% else %}
-  <a class="btn btn-dark btn-lg" href="{% url 'register' %}">Create an Account</a>
-{% endif %}
+      <a class="btn btn-light btn-lg" href="{% url 'resources' %}"
+        aria-label="Browse teaching resources by subject and year group">
+        Browse Resources
+      </a>
+
+      <a class="btn btn-outline-light btn-lg" href="{% url 'posts' %}"
+        aria-label="View teacher blog posts and discussions">
+        View Posts
+      </a>
+
+      {% if user.is_authenticated %}
+      <a class="btn btn-dark btn-lg" href="{% url 'upload_resource' %}"
+        aria-label="Upload a new teaching resource to share with other teachers">
+        Upload a Resource
+      </a>
+      {% else %}
+      <a class="btn btn-dark btn-lg" href="{% url 'register' %}"
+        aria-label="Create an account to upload resources and join discussions">
+        Create an Account
+      </a>
+      {% endif %}
+
     </div>
   </div>
 </div>
@@ -33,7 +48,11 @@
         </p>
       </div>
       <div class="card-footer bg-white border-0">
-        <a href="{% url 'resources' %}" class="btn btn-sm btn-success">Explore</a>
+        <a href="{% url 'resources' %}"
+   class="btn btn-sm btn-success"
+   aria-label="Explore all shared teaching resources">
+   Explore
+</a>
       </div>
     </div>
   </div>
@@ -47,7 +66,7 @@
         </p>
       </div>
       <div class="card-footer bg-white border-0">
-        <a href="{% url 'posts' %}" class="btn btn-sm btn-success">Read posts</a>
+        <a href="{% url 'posts' %}" class="btn btn-sm btn-success" aria-label="Read teacher blog posts and discussions">Read posts</a>
       </div>
     </div>
   </div>
@@ -62,7 +81,11 @@
         </p>
       </div>
       <div class="card-footer bg-white border-0">
-        <a href="{% url 'about' %}" class="btn btn-sm btn-outline-success">Learn more</a>
+        <a href="{% url 'about' %}"
+   class="btn btn-sm btn-outline-success"
+   aria-label="Learn more about The Teaching Garden community">
+   Learn more
+</a>
       </div>
     </div>
   </div>
